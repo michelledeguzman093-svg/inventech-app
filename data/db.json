@@ -1,0 +1,806 @@
+{
+  "users": [
+    {
+      "id": "STU-2023-001",
+      "username": "m.santos",
+      "name": "Maria Santos",
+      "email": "m.santos@cct.edu.ph",
+      "department": "SCS - Computer Science",
+      "status": "Graduated",
+      "year_level": "4th Year"
+    },
+    {
+      "id": "STU-2023-002",
+      "username": "j.reyes",
+      "name": "Juan Reyes",
+      "email": "j.reyes@cct.edu.ph",
+      "department": "SCS - Information Technology",
+      "status": "Active",
+      "year_level": "4th Year"
+    },
+    {
+      "id": "STU-2023-003",
+      "username": "a.cruz",
+      "name": "Anna Cruz",
+      "email": "a.cruz@cct.edu.ph",
+      "department": "SCS - Computer Science",
+      "status": "Active",
+      "year_level": "3rd Year"
+    },
+    {
+      "id": "FAC-2021-001",
+      "username": "t.jason",
+      "name": "Tom Jason",
+      "email": "t.jason@cct.edu.ph",
+      "department": "SCS Faculty",
+      "status": "Active",
+      "year_level": "N/A"
+    },
+    {
+      "id": "FAC-2021-002",
+      "username": "m.dela_cruz",
+      "name": "Joy dela Cruz",
+      "email": "j.delacruz@cct.edu.ph",
+      "department": "SCS Faculty",
+      "status": "Active",
+      "year_level": "N/A"
+    }
+  ],
+  "assets": [
+    {
+      "id": "AST-1001",
+      "asset_tag": "CCT-LPT-001",
+      "serial": "SN-PF4X9011",
+      "model": "ThinkPad L14 Gen 4",
+      "type": "Laptop",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "SCS Lab 1",
+      "sanitization_status": "Pending",
+      "sanitization_method": null,
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 142,
+      "cpu_temp": 48,
+      "disk_usage": 35,
+      "last_seen": "2026-06-09T13:45:00Z"
+    },
+    {
+      "id": "AST-1002",
+      "asset_tag": "CCT-LPT-002",
+      "serial": "SN-PF4X9012",
+      "model": "ThinkPad L14 Gen 4",
+      "type": "Laptop",
+      "status": "Retired",
+      "assigned_to": null,
+      "location": "SCS Lab 1",
+      "sanitization_status": "Pending",
+      "sanitization_method": null,
+      "signature_hash": "sha256:e3b0c44298fc1c149af...",
+      "date_checked_out": "2026-05-16",
+      "battery_cycle_count": 521,
+      "cpu_temp": 82,
+      "disk_usage": 89,
+      "last_seen": "2026-06-09T14:02:11Z"
+    },
+    {
+      "id": "AST-1003",
+      "asset_tag": "CCT-LPT-003",
+      "serial": "SN-PF4X9013",
+      "model": "ThinkPad L14 Gen 4",
+      "type": "Laptop",
+      "status": "Assigned",
+      "assigned_to": "STU-2023-003",
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "N/A - Active Checkout",
+      "signature_hash": "sha256:sig_000000004ccfbc72",
+      "date_checked_out": "2026-06-09",
+      "battery_cycle_count": 89,
+      "cpu_temp": 42,
+      "disk_usage": 12,
+      "last_seen": "2026-06-08T10:00:00Z"
+    },
+    {
+      "id": "AST-1004",
+      "asset_tag": "CCT-DKT-101",
+      "serial": "SN-DG91K001",
+      "model": "Dell OptiPlex 7010",
+      "type": "Desktop",
+      "status": "Assigned",
+      "assigned_to": "FAC-2021-001",
+      "location": "SCS Faculty Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "NIST 800-88 Clear",
+      "signature_hash": "sha256:69b0c2229afc3b14...",
+      "date_checked_out": "2025-10-10",
+      "battery_cycle_count": 0,
+      "cpu_temp": 50,
+      "disk_usage": 54,
+      "last_seen": "2026-06-09T13:59:45Z"
+    },
+    {
+      "id": "AST-1005",
+      "asset_tag": "CCT-LPT-004",
+      "serial": "SN-PF4X9014",
+      "model": "ThinkPad L14 Gen 4",
+      "type": "Laptop",
+      "status": "Under Repair",
+      "assigned_to": null,
+      "location": "Helpdesk Bench",
+      "sanitization_status": "Pending",
+      "sanitization_method": null,
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 612,
+      "cpu_temp": 95,
+      "disk_usage": 98,
+      "last_seen": "2026-06-09T11:20:00Z"
+    },
+    {
+      "id": "AST-1006",
+      "asset_tag": "CCT-LEN-106",
+      "serial": "SN-INVEN46043",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Assigned",
+      "assigned_to": "FAC-2021-001",
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "N/A - Active Checkout",
+      "signature_hash": "sha256:sig_0000000055aab4c3",
+      "date_checked_out": "2026-06-09",
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.082Z"
+    },
+    {
+      "id": "AST-1007",
+      "asset_tag": "CCT-LEN-107",
+      "serial": "SN-INVEN73697",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.082Z"
+    },
+    {
+      "id": "AST-1008",
+      "asset_tag": "CCT-LEN-108",
+      "serial": "SN-INVEN41676",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.082Z"
+    },
+    {
+      "id": "AST-1009",
+      "asset_tag": "CCT-LEN-109",
+      "serial": "SN-INVEN15785",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.083Z"
+    },
+    {
+      "id": "AST-1010",
+      "asset_tag": "CCT-LEN-110",
+      "serial": "SN-INVEN94059",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.083Z"
+    },
+    {
+      "id": "AST-1011",
+      "asset_tag": "CCT-LEN-111",
+      "serial": "SN-INVEN22352",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.083Z"
+    },
+    {
+      "id": "AST-1012",
+      "asset_tag": "CCT-LEN-112",
+      "serial": "SN-INVEN75609",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.083Z"
+    },
+    {
+      "id": "AST-1013",
+      "asset_tag": "CCT-LEN-113",
+      "serial": "SN-INVEN95433",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.083Z"
+    },
+    {
+      "id": "AST-1014",
+      "asset_tag": "CCT-LEN-114",
+      "serial": "SN-INVEN41593",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.083Z"
+    },
+    {
+      "id": "AST-1015",
+      "asset_tag": "CCT-LEN-115",
+      "serial": "SN-INVEN93598",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:18:47.083Z"
+    },
+    {
+      "id": "AST-1016",
+      "asset_tag": "CCT-LPT-999",
+      "serial": "SN-TEST9999",
+      "model": "ThinkPad T14s Gen 4",
+      "type": "Laptop",
+      "status": "Disposed",
+      "assigned_to": null,
+      "location": "Dean Office",
+      "sanitization_status": "Verified",
+      "sanitization_method": "NIST 800-88 Purge (Cryptographic Erase)",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 42,
+      "cpu_temp": 40,
+      "disk_usage": 15,
+      "last_seen": "2026-06-09T06:20:01.006Z"
+    },
+    {
+      "id": "AST-1017",
+      "asset_tag": "CCT-LEN-117",
+      "serial": "SN-INVEN29149",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:21:40.107Z"
+    },
+    {
+      "id": "AST-1018",
+      "asset_tag": "CCT-LEN-118",
+      "serial": "SN-INVEN78582",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:21:40.107Z"
+    },
+    {
+      "id": "AST-1019",
+      "asset_tag": "CCT-LEN-119",
+      "serial": "SN-INVEN54439",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:21:40.107Z"
+    },
+    {
+      "id": "AST-1020",
+      "asset_tag": "CCT-LEN-120",
+      "serial": "SN-INVEN47319",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:21:40.107Z"
+    },
+    {
+      "id": "AST-1021",
+      "asset_tag": "CCT-LEN-121",
+      "serial": "SN-INVEN61284",
+      "model": "Lenovo 123",
+      "type": "Accessory",
+      "status": "Deployable",
+      "assigned_to": null,
+      "location": "IT Storage Room",
+      "sanitization_status": "Verified",
+      "sanitization_method": "Auto-registered from Procurement Sync",
+      "signature_hash": null,
+      "date_checked_out": null,
+      "battery_cycle_count": 0,
+      "cpu_temp": 35,
+      "disk_usage": 0,
+      "last_seen": "2026-06-09T06:21:40.107Z"
+    }
+  ],
+  "licenses": [
+    {
+      "id": "LIC-001",
+      "name": "Adobe Creative Cloud",
+      "key": "XXXX-XXXX-XXXX-XXXX-ADOB-CC99",
+      "total_seats": 50,
+      "seats_assigned": 2,
+      "reclaim_trigger": true,
+      "assigned_users": [
+        "STU-2023-002",
+        "FAC-2021-001"
+      ]
+    },
+    {
+      "id": "LIC-002",
+      "name": "Microsoft 365 A3 Faculty",
+      "key": "XXXX-XXXX-XXXX-XXXX-MSFT-OFF3",
+      "total_seats": 100,
+      "seats_assigned": 2,
+      "reclaim_trigger": true,
+      "assigned_users": [
+        "FAC-2021-001",
+        "FAC-2021-002"
+      ]
+    },
+    {
+      "id": "LIC-003",
+      "name": "IntelliJ IDEA Ultimate",
+      "key": "XXXX-XXXX-XXXX-XXXX-JB-IDEA",
+      "total_seats": 20,
+      "seats_assigned": 0,
+      "reclaim_trigger": true,
+      "assigned_users": []
+    }
+  ],
+  "maintenance": [
+    {
+      "id": "MNT-2001",
+      "asset_tag": "CCT-LPT-001",
+      "issue_type": "Keyboard",
+      "status": "Resolved",
+      "technician_notes": "Replaced missing keycaps on the 'W' and 'S' keys. Verified connection.",
+      "timestamp": "2026-04-12T09:00:00Z",
+      "resolved_at": "2026-04-12T10:30:00Z"
+    },
+    {
+      "id": "MNT-2002",
+      "asset_tag": "CCT-LPT-002",
+      "issue_type": "Battery",
+      "status": "Resolved",
+      "technician_notes": "Battery holding less than 20% charge. Replaced with OEM battery pack.",
+      "timestamp": "2026-05-02T13:15:00Z",
+      "resolved_at": "2026-05-02T14:45:00Z"
+    },
+    {
+      "id": "MNT-2003",
+      "asset_tag": "CCT-LPT-004",
+      "issue_type": "Thermal / Fan",
+      "status": "Open",
+      "technician_notes": "Device running hot (>95C CPU temperature under load). Fan spinning loudly and vibrating. Standard thermal paste replacement initiated.",
+      "timestamp": "2026-06-09T11:20:00Z",
+      "resolved_at": null
+    },
+    {
+      "id": "MNT-2004",
+      "asset_tag": "CCT-LPT-002",
+      "issue_type": "Thermal / Fan",
+      "status": "Open",
+      "technician_notes": "AUTOMATED AI ALERT: High Risk Profile Score (85%). Triggered by: High battery cycle count (521), Extreme thermal throttling (CPU Temp: 82°C)",
+      "timestamp": "2026-06-09T06:20:01.050Z",
+      "resolved_at": null
+    }
+  ],
+  "workflows": [
+    {
+      "id": "REQ-10001",
+      "item_name": "Intel Core i7 Laptops",
+      "quantity": 10,
+      "cost": 650000,
+      "requested_by": "IT Asset Manager",
+      "current_state": "Received",
+      "manager_approved": true,
+      "date_initiated": "2026-06-01T08:00:00Z"
+    },
+    {
+      "id": "REQ-10002",
+      "item_name": "ASUS Wi-Fi 6 Routers",
+      "quantity": 5,
+      "cost": 45000,
+      "requested_by": "Helpdesk Lead",
+      "current_state": "Rejected",
+      "manager_approved": false,
+      "date_initiated": "2026-06-08T10:30:00Z"
+    },
+    {
+      "id": "REQ-10003",
+      "item_name": "Lenovo 123",
+      "quantity": 10,
+      "cost": 30000,
+      "requested_by": "IT Asset Team",
+      "current_state": "Registered",
+      "manager_approved": true,
+      "date_initiated": "2026-06-09T06:18:32.344Z"
+    },
+    {
+      "id": "REQ-10004",
+      "item_name": "Lenovo 123",
+      "quantity": 5,
+      "cost": 325000,
+      "requested_by": "IT Asset Team",
+      "current_state": "Registered",
+      "manager_approved": true,
+      "date_initiated": "2026-06-09T06:21:28.105Z"
+    },
+    {
+      "id": "REQ-10005",
+      "item_name": "ThinkPad L14 Gen 4",
+      "quantity": 3,
+      "cost": 195000,
+      "requested_by": "Procurement Simulator",
+      "current_state": "Manager Approval",
+      "manager_approved": null,
+      "date_initiated": "2026-06-09T06:21:57.172Z"
+    }
+  ],
+  "disposals": [
+    {
+      "id": "DISP-1001",
+      "asset_id": "AST-1016",
+      "asset_tag": "CCT-LPT-999",
+      "model": "ThinkPad T14s Gen 4",
+      "serial": "SN-TEST9999",
+      "type": "Laptop",
+      "sanitize_method": "NIST 800-88 Purge (Cryptographic Erase)",
+      "certified_by": "Dr. Joy dela Cruz",
+      "disposal_date": "2026-06-09",
+      "signature_hash": "sha256:sig_disp_00000000301383f6",
+      "certificate_hash": "sha256:cert_00000000903a8be2"
+    }
+  ],
+  "simulation_logs": [
+    {
+      "timestamp": "2026-06-09T06:30:40.885Z",
+      "type": "Disposal Audit",
+      "message": "FINALIZED DISPOSAL for CCT-LPT-999. Audit record created: DISP-1001. Cryptographic Cert Hash: sha256:cert_00000000903a8be2"
+    },
+    {
+      "timestamp": "2026-06-09T06:30:40.872Z",
+      "type": "Sanitization",
+      "message": "Asset CCT-LPT-999 sanitized using NIST 800-88 Purge (Cryptographic Erase). Status: Verified."
+    },
+    {
+      "timestamp": "2026-06-09T06:30:40.831Z",
+      "type": "Retirement",
+      "message": "Asset CCT-LPT-999 (ThinkPad T14s Gen 4) status changed to RETIRED. Enforcing sanitization before disposal."
+    },
+    {
+      "timestamp": "2026-06-09T06:30:15.812Z",
+      "type": "Retirement",
+      "message": "Asset CCT-LPT-002 (ThinkPad L14 Gen 4) status changed to RETIRED. Enforcing sanitization before disposal."
+    },
+    {
+      "timestamp": "2026-06-09T06:30:15.799Z",
+      "type": "Sanitization",
+      "message": "Asset CCT-LPT-002 sanitized using NIST 800-88 Purge (Cryptographic Erase). Status: Verified."
+    },
+    {
+      "timestamp": "2026-06-09T06:30:15.493Z",
+      "type": "Retirement",
+      "message": "Asset CCT-LPT-002 (ThinkPad L14 Gen 4) status changed to RETIRED. Enforcing sanitization before disposal."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:57.172Z",
+      "type": "Temporal Workflow",
+      "message": "Initiated Temporal workflow REQ-10005 for 'ThinkPad L14 Gen 4' (Qty: 3). Current state: Manager Approval"
+    },
+    {
+      "timestamp": "2026-06-09T06:21:40.107Z",
+      "type": "Temporal Workflow",
+      "message": "Workflow REQ-10004 finished successfully. All 5 assets are now in DEPLOYABLE state. State: REGISTERED."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:40.107Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-121 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:40.107Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-120 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:40.107Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-119 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:40.107Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-118 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:40.107Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-117 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:40.107Z",
+      "type": "Procurement API",
+      "message": "Received asset cargo for REQ-10004. Auto-syncing to Snipe-IT inventory..."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:35.098Z",
+      "type": "Temporal Workflow",
+      "message": "Workflow REQ-10004 approved by manager. Transitioning state to ORDERED. Procurement API notified."
+    },
+    {
+      "timestamp": "2026-06-09T06:21:28.105Z",
+      "type": "Temporal Workflow",
+      "message": "Initiated Temporal workflow REQ-10004 for 'Lenovo 123' (Qty: 5). Current state: Manager Approval"
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.050Z",
+      "type": "SageMaker ML",
+      "message": "Batch inference completed. Scanned 16 items. Found 2 Critical and 0 Warning conditions."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.050Z",
+      "type": "Slack Notification",
+      "message": "🚨 [ITAM-ALERT] Asset CCT-LPT-002 has a 85% chance of imminent failure. Auto-ticket created."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.050Z",
+      "type": "SageMaker ML",
+      "message": "CRITICAL RISK: Asset CCT-LPT-002 Failure Probability is 85%. Auto-created ticket MNT-2004."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.049Z",
+      "type": "SageMaker ML",
+      "message": "Started batch inference job on device telemetry data..."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.034Z",
+      "type": "Kafka Stream",
+      "message": "Finished auto-reclamation process. Total seats reclaimed: 2 licenses, 1 hardware assets."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.034Z",
+      "type": "Auto-Reclamation Engine",
+      "message": "Asset CCT-LPT-001 unassigned from departed user STU-2023-001. Flagged for Sanitization."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.034Z",
+      "type": "Auto-Reclamation Engine",
+      "message": "Automated Rule Triggered: Reclaimed license seat for 'IntelliJ IDEA Ultimate' from user STU-2023-001."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.034Z",
+      "type": "Auto-Reclamation Engine",
+      "message": "Automated Rule Triggered: Reclaimed license seat for 'Adobe Creative Cloud' from user STU-2023-001."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.033Z",
+      "type": "Kafka Stream",
+      "message": "Published event USER_STATUS_CHANGE (ID: STU-2023-001) to topic 'hris-status-updates'"
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.033Z",
+      "type": "CDC - Debezium",
+      "message": "Change Data Capture: postgres.public.users.status updated for user STU-2023-001 (Active -> Graduated)."
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.020Z",
+      "type": "E-Signature",
+      "message": "Asset CCT-LPT-003 checked out to Anna Cruz (STU-2023-003). Signature verified. Hash: sha256:sig_000000004ccfbc72"
+    },
+    {
+      "timestamp": "2026-06-09T06:20:01.006Z",
+      "type": "PostgreSQL Store",
+      "message": "Manually registered asset CCT-LPT-999 (ThinkPad T14s Gen 4). Written to core Relational tables."
+    },
+    {
+      "timestamp": "2026-06-09T06:19:27.831Z",
+      "type": "E-Signature",
+      "message": "Asset CCT-LEN-106 checked out to Tom Jason (FAC-2021-001). Signature verified. Hash: sha256:sig_0000000055aab4c3"
+    },
+    {
+      "timestamp": "2026-06-09T06:18:58.014Z",
+      "type": "Temporal Workflow",
+      "message": "Workflow REQ-10002 rejected by manager. State: REJECTED."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.083Z",
+      "type": "Temporal Workflow",
+      "message": "Workflow REQ-10003 finished successfully. All 10 assets are now in DEPLOYABLE state. State: REGISTERED."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.083Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-115 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.083Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-114 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.083Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-113 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.083Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-112 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.083Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-111 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.083Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-110 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.083Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-109 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.082Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-108 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.082Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-107 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.082Z",
+      "type": "Snipe-IT Auto-Intake",
+      "message": "Auto-registered new asset CCT-LEN-106 (Lenovo 123) into relational inventory."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:47.081Z",
+      "type": "Procurement API",
+      "message": "Received asset cargo for REQ-10003. Auto-syncing to Snipe-IT inventory..."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:42.074Z",
+      "type": "Temporal Workflow",
+      "message": "Workflow REQ-10003 approved by manager. Transitioning state to ORDERED. Procurement API notified."
+    },
+    {
+      "timestamp": "2026-06-09T06:18:32.344Z",
+      "type": "Temporal Workflow",
+      "message": "Initiated Temporal workflow REQ-10003 for 'Lenovo 123' (Qty: 10). Current state: Manager Approval"
+    },
+    {
+      "timestamp": "2026-06-09T13:30:00Z",
+      "type": "HRIS Sync",
+      "message": "Connected to HRIS database log listener on port 5432..."
+    },
+    {
+      "timestamp": "2026-06-09T13:30:05Z",
+      "type": "Kafka Connect",
+      "message": "Debezium CDC connector active for postgres.public.users"
+    },
+    {
+      "timestamp": "2026-06-09T13:31:00Z",
+      "type": "Active Directory Sync",
+      "message": "Successfully synchronized 5 Active Directory user profiles"
+    }
+  ]
+}

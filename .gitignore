@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# School deliverables (not part of the running app)
+*.docx
+*.pdf
+*.xlsx
+*.drawio
+*.drawio.png
+
+# Architecture diagrams (kept as drawio source, not needed for deployment)
+Architecture Diagram.drawio.png
+Entity Relationship Diagram (ERD).drawio.png
+Level 0 DFD .drawio.png
+Level 1 DFD.drawio.png
+TO-BE BPMN Diagrams.drawio.png
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

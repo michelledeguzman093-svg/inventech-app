@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvenTech | IT Asset Management Optimization</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo-container">
+        <div class="logo-icon"><i class="fa-solid fa-cube"></i></div>
+        <div class="logo-text">
+          <h1>InvenTech</h1>
+          <span>ITAM System v2.0</span>
+        </div>
+      </div>
+      
+      <ul class="nav-links">
+        <li>
+          <a class="nav-item active" data-view="overview">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>Overview</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-view="registry">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            <span>Asset Registry</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-view="handoff">
+            <i class="fa-solid fa-signature"></i>
+            <span>Digital Handoff</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-view="integrations">
+            <i class="fa-solid fa-network-wired"></i>
+            <span>Integrations & Sync</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-view="diagnostics">
+            <i class="fa-solid fa-microchip"></i>
+            <span>ML Diagnostics</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" data-view="disposal">
+            <i class="fa-solid fa-trash-can"></i>
+            <span>Disposal & Wipes</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="status-badge">
+          <div class="status-dot"></div>
+          <span>Integration Engine Active</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- HEADER -->
+      <header class="content-header">
+        <div class="header-title">
+          <h2 id="view-title">System Overview</h2>
+          <p id="view-desc">Real-time status of InvenTech asset infrastructure</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="refreshData()">
+            <i class="fa-solid fa-rotate"></i> Sync Sync
+          </button>
+          <button class="btn btn-primary" onclick="openNewWorkflowModal()">
+            <i class="fa-solid fa-plus"></i> Procurement Request
+          </button>
+        </div>
+      </header>
+
+      <!-- VIEW: OVERVIEW -->
+      <section id="view-overview" class="dashboard-view active">
+        <!-- KPI Row -->
+        <div class="card-grid">
+          <div class="glass-card">
+            <div class="card-kpi">
+              <div class="kpi-info">
+                <p>Total Hardware Assets</p>
+                <div class="kpi-value" id="kpi-total-assets">-</div>
+              </div>
+              <div class="kpi-icon"><i class="fa-solid fa-laptop"></i></div>
+            </div>
+            <div class="kpi-trend trend-up">
+              <i class="fa-solid fa-arrow-trend-up"></i> <span>100% Tracking Rate</span>
+            </div>
+          </div>
+          
+          <div class="glass-card">
+            <div class="card-kpi">
+              <div class="kpi-info">
+                <p>Software License Seats</p>
+                <div class="kpi-value" id="kpi-license-seats">-</div>
+              </div>
+              <div class="kpi-icon"><i class="fa-solid fa-key"></i></div>
+            </div>
+            <div class="kpi-trend">
+              <span id="kpi-license-allocated">-</span> / <span id="kpi-license-total">-</span> seats allocated
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-kpi">
+              <div class="kpi-info">
+                <p>Pending Approvals</p>
+                <div class="kpi-value" id="kpi-pending-approvals">-</div>
+              </div>
+              <div class="kpi-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            </div>
+            <div class="kpi-trend trend-down">
+              <i class="fa-solid fa-circle-notch fa-spin"></i> <span>Temporal workflow active</span>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-kpi">
+              <div class="kpi-info">
+                <p>Staff Time Saved</p>
+                <div class="kpi-value">10 hr</div>
+              </div>
+              <div class="kpi-icon"><i class="fa-solid fa-clock"></i></div>
+            </div>
+            <div class="kpi-trend trend-up">
+              <i class="fa-solid fa-bolt"></i> <span>Zero Latency CDC Sync</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-grid">
+          <!-- Recent Workflows & Queue -->
+          <div class="glass-card">
+            <div class="panel-header">
+              <h3>Active Workflows (Temporal Orchestrator)</h3>
+              <span class="badge badge-active">Live state machine tracking</span>
+            </div>
+            <div class="table-container">
+              <table class="custom-table" id="table-workflows">
+                <thead>
+                  <tr>
+                    <th>Workflow ID</th>
+                    <th>Item Requested</th>
+                    <th>Qty</th>
+                    <th>Total Cost</th>
+                    <th>Current State</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Quick Statistics -->
+          <div class="glass-card">
+            <div class="panel-header">
+              <h3>Sanitization Status</h3>
+            </div>
+            <div class="chart-container">
+              <canvas id="sanitizationChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Checked Out Assets -->
+        <div class="panel-single glass-card">
+          <div class="panel-header">
+            <h3>Active Hardware Assignments</h3>
+            <button class="btn btn-secondary" onclick="switchView('handoff')">
+              <i class="fa-solid fa-handshake"></i> Start Handoff Check-out
+            </button>
+          </div>
+          <div class="table-container">
+            <table class="custom-table" id="table-active-assignments">
+              <thead>
+                <tr>
+                  <th>Asset Tag</th>
+                  <th>Model</th>
+                  <th>Assigned User</th>
+                  <th>Email</th>
+                  <th>Check-out Date</th>
+                  <th>Signature Receipt (Hash)</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Filled by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: REGISTRY -->
+      <section id="view-registry" class="dashboard-view">
+        <div class="panel-single glass-card">
+          <div class="panel-header">
+            <h3>Hardware Asset Inventory (PostgreSQL database simulator)</h3>
+            <div class="header-actions">
+              <button class="btn btn-secondary" onclick="openNewAssetModal()">
+                <i class="fa-solid fa-plus"></i> Add Physical Asset
+              </button>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="custom-table" id="table-full-assets">
+              <thead>
+                <tr>
+                  <th>Asset Tag</th>
+                  <th>Serial Number</th>
+                  <th>Model</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Location</th>
+                  <th>Sanitization</th>
+                  <th>Signature Hash</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Filled by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: HANDOFF -->
+      <section id="view-handoff" class="dashboard-view">
+        <div class="panel-grid">
+          <!-- Handoff signature form -->
+          <div class="glass-card">
+            <div class="panel-header">
+              <h3>Digital Handover sign-off (E-Signature Module)</h3>
+            </div>
+            
+            <form id="form-checkout" class="simulator-panel" onsubmit="handleCheckoutSubmit(event)">
+              <div class="form-group">
+                <label for="checkout-asset">Select Hardware Asset to Deploy</label>
+                <select id="checkout-asset" class="form-input" required>
+                  <!-- Filled by JS -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="checkout-user">Select Student / Faculty Member</label>
+                <select id="checkout-user" class="form-input" required>
+                  <!-- Filled by JS -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Signee Digital E-Signature (Touch/Mouse/Trackpad)</label>
+                <div class="signature-area">
+                  <canvas id="sig-canvas"></canvas>
+                </div>
+                <div class="signature-actions">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="clearSignatureCanvas()">
+                    Clear Canvas
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary">
+                Verify Signature & Complete Checkout
+              </button>
+            </form>
+          </div>
+
+          <!-- Details / Explanation -->
+          <div class="glass-card" style="display:flex; flex-direction:column; gap:1rem;">
+            <h3>Digital Accountability Policy</h3>
+            <p>To comply with standard IT auditing rules, <strong>paper receipts have been entirely deprecated</strong>.</p>
+            <p>Every equipment handoff requires an interactive **E-Signature** which is merged with transaction timestamp and security credentials to generate a unique SHA256 cryptographic receipt hash.</p>
+            <div style="background: rgba(255,255,255,0.03); border: 1px dashed var(--border-color); padding: 1rem; border-radius: 8px; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.4;">
+              <span style="color:var(--primary); font-weight:600;">Security Audit Trace:</span><br>
+              - Unique barcoded Asset Tag<br>
+              - Federated Active Directory ID<br>
+              - Cryptographic signature data<br>
+              - Hash stored permanently in PostgreSQL Core
+            </div>
+            <p style="color:var(--text-muted); font-size:0.85rem;">
+              <i class="fa-solid fa-shield-halved"></i> Audit trail records are tamper-proof once signature receipt is saved.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: INTEGRATIONS -->
+      <section id="view-integrations" class="dashboard-view">
+        <div class="panel-grid">
+          <!-- Simulation triggers -->
+          <div class="simulator-panel">
+            <!-- HRIS Simulator -->
+            <div class="glass-card">
+              <div class="panel-header">
+                <h3>HRIS status Change Simulator</h3>
+                <span class="badge badge-active">Real-time Webhook</span>
+              </div>
+              <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom: 1rem;">
+                Simulates a student graduating or employee leaving. The CDC/Debezium connector intercepts the DB row change, pushing an event to Kafka which reclaims their licenses in &lt;1 hour.
+              </p>
+              
+              <form id="form-hris-sync" onsubmit="handleHrisSubmit(event)" style="display:flex; flex-direction:column; gap:1rem;">
+                <div class="form-group">
+                  <label for="hris-user">Select Student/Faculty Profile</label>
+                  <select id="hris-user" class="form-input" required>
+                    <!-- Filled by JS -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="hris-status">Set Status in HRIS Database</label>
+                  <select id="hris-status" class="form-input" required>
+                    <option value="Graduated">Graduated (Reclaim all resources)</option>
+                    <option value="Inactive">Inactive/Terminated (Reclaim all resources)</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-danger">
+                  <i class="fa-solid fa-shuffle"></i> Trigger Status Update (CDC Sync)
+                </button>
+              </form>
+            </div>
+
+            <!-- Procurement Simulator -->
+            <div class="glass-card">
+              <div class="panel-header">
+                <h3>Procurement Intake Simulator</h3>
+                <span class="badge badge-pending">Nightly Batch</span>
+              </div>
+              <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom: 1rem;">
+                Triggers a simulated purchase request to the procurement workflow. Once approved by the manager, a Temporal state engine auto-registers it into Snipe-IT.
+              </p>
+              
+              <form id="form-procurement" onsubmit="handleProcurementSubmit(event)" style="display:flex; flex-direction:column; gap:1rem;">
+                <div class="form-group">
+                  <label for="proc-item">Item Name</label>
+                  <select id="proc-item" class="form-input">
+                    <option value="ThinkPad L14 Gen 4">ThinkPad L14 Gen 4 Laptop</option>
+                    <option value="iPad Pro 11-inch">iPad Pro 11-inch Tablet</option>
+                    <option value="Dell OptiPlex 7010">Dell OptiPlex 7010 Desktop</option>
+                  </select>
+                </div>
+                <div class="form-row" style="display:flex; gap:1rem;">
+                  <div class="form-group" style="flex:1;">
+                    <label for="proc-qty">Quantity</label>
+                    <input type="number" id="proc-qty" class="form-input" value="3" min="1" max="10">
+                  </div>
+                  <div class="form-group" style="flex:1;">
+                    <label for="proc-cost">Cost (₱)</label>
+                    <input type="number" id="proc-cost" class="form-input" value="195000">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa-solid fa-cart-shopping"></i> Submit Purchase Request
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Kafka/Debezium Logs window -->
+          <div class="glass-card">
+            <div class="panel-header">
+              <h3>Unified Integration Engine Output (Debezium + Kafka)</h3>
+              <button class="btn btn-secondary btn-sm" onclick="clearLogs()">Clear Console</button>
+            </div>
+            <div class="terminal-window">
+              <div class="terminal-header">
+                <div class="terminal-dots">
+                  <div class="dot dot-red"></div>
+                  <div class="dot dot-yellow"></div>
+                  <div class="dot dot-green"></div>
+                </div>
+                <div class="terminal-title">bash - InvenTech CDC Listener</div>
+              </div>
+              <div class="terminal-body" id="log-terminal">
+                <!-- Log streams appended here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: DIAGNOSTICS -->
+      <section id="view-diagnostics" class="dashboard-view">
+        <div class="panel-grid">
+          <!-- ML Diagnostics control -->
+          <div class="glass-card" style="display:flex; flex-direction:column; gap:1.25rem;">
+            <div class="panel-header">
+              <h3>AI-based Predictive Maintenance</h3>
+              <span class="badge badge-active">SageMaker Engine</span>
+            </div>
+            <p>
+              InvenTech uses automated failure prediction to transition from reactive repairs to proactive support.
+            </p>
+            <p style="color:var(--text-muted); font-size:0.85rem;">
+              The ML algorithm scans device metrics (e.g. CPU operating temperatures and battery cycle capacity logs) from InfluxDB to compute an active <strong>Failure Risk Score</strong>.
+            </p>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display:flex; flex-direction:column; gap:0.75rem;">
+              <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                <span>Inference Model status:</span>
+                <span class="badge badge-active">Model Loaded</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                <span>Input telemetries:</span>
+                <span>InfluxDB (MDM streams)</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:0.9rem;">
+                <span>Proactive Alert Channel:</span>
+                <span>Slack webhook endpoint</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="runMlInference()">
+              <i class="fa-solid fa-brain"></i> Trigger SageMaker Inference Job
+            </button>
+          </div>
+
+          <!-- Active Telemetry Visualizer -->
+          <div class="glass-card">
+            <div class="panel-header">
+              <h3>Live Telemetry Monitor (InfluxDB time-series DB)</h3>
+              <select id="telemetry-asset-select" class="form-input" style="padding:0.4rem 0.8rem; font-size:0.8rem;" onchange="updateTelemetryChart()">
+                <!-- Filled by JS -->
+              </select>
+            </div>
+            <div class="chart-container" style="height:250px;">
+              <canvas id="telemetryChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Devices risk metrics -->
+        <div class="panel-single glass-card">
+          <div class="panel-header">
+            <h3>Device Diagnostics & Risk Catalog</h3>
+          </div>
+          <div class="table-container">
+            <table class="custom-table" id="table-device-risk">
+              <thead>
+                <tr>
+                  <th>Asset Tag</th>
+                  <th>Model</th>
+                  <th>Battery Cycles</th>
+                  <th>CPU Temperature</th>
+                  <th>Disk Space Used</th>
+                  <th>Diagnostic Health Status</th>
+                  <th>Action Needed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Filled by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: DISPOSAL & WIPES -->
+      <section id="view-disposal" class="dashboard-view">
+        <div class="panel-grid">
+          <!-- Retired equipment to dispose -->
+          <div class="glass-card">
+            <div class="panel-header">
+              <h3>Equipment Awaiting Final Disposal</h3>
+              <span class="badge badge-repair">Sanitization required</span>
+            </div>
+            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.25rem;">
+              Before an asset can be finalized for physical disposal or recycling, standard data scrubbing must be verified. Once verified, the Compliance Officer must sign off.
+            </p>
+            <div class="table-container">
+              <table class="custom-table" id="table-retired-assets">
+                <thead>
+                  <tr>
+                    <th>Asset Tag</th>
+                    <th>Model</th>
+                    <th>Sanitization</th>
+                    <th>Method</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- History of Finalized Disposals -->
+          <div class="glass-card">
+            <div class="panel-header">
+              <h3>Disposal & Decommission Logs</h3>
+            </div>
+            <div class="table-container">
+              <table class="custom-table" id="table-disposal-records">
+                <thead>
+                  <tr>
+                    <th>Record ID</th>
+                    <th>Asset Tag</th>
+                    <th>Officer</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Filled by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL: NEW WORKFLOW -->
+  <div class="modal" id="modal-workflow">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeWorkflowModal()">&times;</button>
+      <div class="modal-header">
+        <h3>Initiate Procurement Workflow</h3>
+      </div>
+      <form id="form-modal-procurement" onsubmit="handleModalProcurementSubmit(event)" style="display:flex; flex-direction:column; gap:1.25rem;">
+        <div class="form-group">
+          <label for="modal-proc-item">Item Description</label>
+          <input type="text" id="modal-proc-item" class="form-input" placeholder="e.g. ThinkPad L14 Gen 4" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-proc-qty">Quantity</label>
+          <input type="number" id="modal-proc-qty" class="form-input" min="1" value="5" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-proc-cost">Total Estimated Cost (₱)</label>
+          <input type="number" id="modal-proc-cost" class="form-input" value="325000" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-proc-by">Requested By</label>
+          <input type="text" id="modal-proc-by" class="form-input" value="IT Asset Team" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:0.5rem;">
+          Start Temporal Workflow Process
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: NEW ASSET -->
+  <div class="modal" id="modal-asset">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeAssetModal()">&times;</button>
+      <div class="modal-header">
+        <h3>Register New Physical Asset</h3>
+      </div>
+      <form id="form-modal-asset" onsubmit="handleModalAssetSubmit(event)" style="display:flex; flex-direction:column; gap:1.25rem;">
+        <div class="form-group">
+          <label for="modal-asset-tag">Asset Tag Code</label>
+          <input type="text" id="modal-asset-tag" class="form-input" placeholder="CCT-LPT-XXX" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-asset-serial">Serial Number</label>
+          <input type="text" id="modal-asset-serial" class="form-input" placeholder="SN-XXXXX" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-asset-model">Equipment Model</label>
+          <input type="text" id="modal-asset-model" class="form-input" placeholder="ThinkPad L14 Gen 4" required>
+        </div>
+        <div class="form-group">
+          <label for="modal-asset-type">Asset Type</label>
+          <select id="modal-asset-type" class="form-input" required>
+            <option value="Laptop">Laptop</option>
+            <option value="Desktop">Desktop</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Accessory">Accessory</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="modal-asset-loc">Physical Location</label>
+          <input type="text" id="modal-asset-loc" class="form-input" value="IT Storage Room" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:0.5rem;">
+          Write Asset to PostgreSQL
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: SANITIZE -->
+  <div class="modal" id="modal-sanitize">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeSanitizeModal()">&times;</button>
+      <div class="modal-header">
+        <h3>Asset Data Sanitization Checklist</h3>
+      </div>
+      <form id="form-modal-sanitize" onsubmit="handleModalSanitizeSubmit(event)" style="display:flex; flex-direction:column; gap:1.25rem;">
+        <input type="hidden" id="sanitize-asset-id">
+        <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.4;">
+          Ensure compliance guidelines are strictly followed. Data must be sanitized before checking out this equipment again or marking it for disposal.
+        </p>
+        <div class="form-group">
+          <label for="sanitize-method">Sanitization Standard</label>
+          <select id="sanitize-method" class="form-input" required>
+            <option value="NIST 800-88 Clear (ATA Overwrite)">NIST 800-88 Clear (ATA Overwrite)</option>
+            <option value="NIST 800-88 Purge (Cryptographic Erase)">NIST 800-88 Purge (Cryptographic Erase)</option>
+            <option value="DoD 5220.22-M (3 passes)">DoD 5220.22-M (3 passes)</option>
+          </select>
+        </div>
+        
+        <div style="background:rgba(255,255,255,0.02); padding:1rem; border-radius:8px; border:1px solid var(--border-color); display:flex; flex-direction:column; gap:0.5rem; font-size:0.85rem;">
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <input type="checkbox" id="check-bios" required>
+            <label for="check-bios">Verify UEFI/BIOS password lock is removed</label>
+          </div>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <input type="checkbox" id="check-mdm" required>
+            <label for="check-mdm">Remove device record from Intune/Jamf MDM enrollment</label>
+          </div>
+          <div style="display:flex; gap:0.5rem; align-items:center;">
+            <input type="checkbox" id="check-firmware" required>
+            <label for="check-firmware">Verify full firmware-wipe complete</label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+          Log Sanitization Certificate
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: FINAL DISPOSE -->
+  <div class="modal" id="modal-dispose">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeDisposeModal()">&times;</button>
+      <div class="modal-header">
+        <h3>Final Decommission & Disposal Sign-off</h3>
+      </div>
+      <form id="form-modal-dispose" onsubmit="handleModalDisposeSubmit(event)" style="display:flex; flex-direction:column; gap:1.25rem;">
+        <input type="hidden" id="dispose-asset-id">
+        
+        <div class="form-group">
+          <label for="dispose-officer">Compliance Officer Name</label>
+          <input type="text" id="dispose-officer" class="form-input" value="Dr. Joy dela Cruz" required>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.02); padding:1rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.85rem; display:flex; flex-direction:column; gap:0.4rem;">
+          <div style="display:flex; justify-content:space-between;">
+            <span>Asset Tag:</span>
+            <strong id="dispose-info-tag">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span>Serial:</span>
+            <strong id="dispose-info-serial">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span>Sanitization Standard:</span>
+            <strong id="dispose-info-sanitize" style="color:var(--success);">-</strong>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Compliance Officer E-Signature Sign-off</label>
+          <div class="signature-area">
+            <canvas id="disp-sig-canvas"></canvas>
+          </div>
+          <div class="signature-actions">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="clearDispSignatureCanvas()">
+              Clear Canvas
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-danger">
+          <i class="fa-solid fa-file-shield"></i> Finalize Disposal & Generate Audit Certificate
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: COMPLIANCE CERTIFICATE PREVIEW -->
+  <div class="modal" id="modal-certificate">
+    <div class="modal-content" style="width: 650px; background:#0b0e1b; border: 2px solid var(--border-glow); box-shadow: 0 0 30px rgba(59,130,246,0.25);">
+      <button class="modal-close" onclick="closeCertificateModal()">&times;</button>
+      
+      <div style="border: 2px double rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; position:relative; overflow:hidden;">
+        <!-- Watermark -->
+        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%) rotate(-45deg); font-size:5.5rem; font-weight:800; color:rgba(255,255,255,0.015); pointer-events:none; letter-spacing:10px;">
+          SANITIZED
+        </div>
+        
+        <div style="text-align:center; margin-bottom:1.5rem;">
+          <div style="width: 60px; height: 60px; background: rgba(16,185,129,0.15); border-radius: 50%; display:inline-flex; align-items:center; justify-content:center; color:var(--success); border:1px solid var(--success); font-size:1.8rem; margin-bottom:0.75rem;">
+            <i class="fa-solid fa-file-shield"></i>
+          </div>
+          <h2 style="font-family:'Outfit'; font-size:1.6rem; font-weight:700; letter-spacing:-0.5px; color:#fff;">CERTIFICATE OF DATA SANITIZATION</h2>
+          <p style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:0.25rem;">NIST 800-88 Compliance Audit Record</p>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:0.75rem; font-size:0.9rem; margin-bottom:2rem; border-top:1px solid rgba(255,255,255,0.05); border-bottom:1px solid rgba(255,255,255,0.05); padding:1.25rem 0;">
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">Certificate ID:</span>
+            <strong id="cert-id" style="font-family:var(--font-mono); color:var(--secondary);">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">Asset Description:</span>
+            <strong id="cert-model">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">Asset Tag Code:</span>
+            <strong><code id="cert-tag" style="background:rgba(255,255,255,0.05); padding:0.1rem 0.4rem; border-radius:4px;">-</code></strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">Hardware Serial:</span>
+            <strong id="cert-serial">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">Sanitization Standard:</span>
+            <strong id="cert-method" style="color:var(--success);">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">Decommission Date:</span>
+            <strong id="cert-date">-</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="color:var(--text-muted);">Certified By:</span>
+            <strong id="cert-officer">-</strong>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+          <div>
+            <p style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Verification Hash</p>
+            <code id="cert-hash" style="font-size:0.72rem; color:var(--text-muted); display:block; margin-top:0.25rem; font-family:var(--font-mono);">-</code>
+          </div>
+          <div style="text-align:right; border-top:1px solid rgba(255,255,255,0.1); padding-top:0.5rem; width:150px;">
+            <div style="height:35px; overflow:hidden; opacity:0.85;" id="cert-signature-draw">
+              <span style="font-family:'Courier New', monospace; font-size:0.8rem; font-style:italic; color:var(--primary);">[DIGITAL SIGN]</span>
+            </div>
+            <p style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; margin-top:0.25rem;">Compliance Sign-off</p>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+        <button class="btn btn-secondary" onclick="closeCertificateModal()">Close Preview</button>
+        <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Certificate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom App JS -->
+  <script src="js/app.js"></script>
+</body>
+</html>
