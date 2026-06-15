@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DB_FILE = path.join(__dirname, 'data', 'db.json');
+const SEED_FILE = path.join(__dirname, 'data', 'db.seed.json');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -43,6 +44,32 @@ function addLog(db, type, message) {
     db.simulation_logs.pop(); // Keep last 50 logs
   }
 }
+
+// API: Login
+app.post('/api/login', (req, res) => {
+  const { username } = req.body;
+  if (!username) {
+    return res.status(400).json({ error: "Username is required." });
+  }
+  const db = readDB();
+  const user = db.users.find(u => u.username === username);
+  if (!user) {
+    return res.status(401).json({ error: "Invalid username. User not found in the system." });
+  }
+  res.json({ success: true, user });
+});
+
+// API: Reset demo data
+app.post('/api/reset', (req, res) => {
+  try {
+    const seedData = fs.readFileSync(SEED_FILE, 'utf8');
+    fs.writeFileSync(DB_FILE, seedData, 'utf8');
+    res.json({ success: true, message: "Database reset to original demo data." });
+  } catch (error) {
+    console.error("Error resetting database:", error);
+    res.status(500).json({ error: "Failed to reset database." });
+  }
+});
 
 // API: Get entire database state
 app.get('/api/data', (req, res) => {

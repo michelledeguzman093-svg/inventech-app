@@ -10,6 +10,9 @@ let state = {
   simulation_logs: []
 };
 
+// Current logged-in user
+let currentUser = null;
+
 // Canvas drawing state
 let drawing = false;
 let canvas, ctx;
@@ -21,16 +24,145 @@ let telemetryChartInstance = null;
 // Selected asset for telemetry chart
 let selectedTelemetryAssetTag = '';
 
+// ===== TOAST NOTIFICATION SYSTEM =====
+function showToast(type, title, message) {
+  const container = document.getElementById('toast-container');
+  const icons = {
+    success: 'fa-circle-check',
+    error: 'fa-circle-xmark',
+    info: 'fa-circle-info'
+  };
+
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `
+    <div class="toast-icon"><i class="fa-solid ${icons[type] || icons.info}"></i></div>
+    <div class="toast-body">
+      <div class="toast-title">${title}</div>
+      <div class="toast-message">${message}</div>
+    </div>
+    <button class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+    <div class="toast-progress"></div>
+  `;
+
+  container.appendChild(toast);
+
+  // Auto-remove after 4.5 seconds
+  setTimeout(() => {
+    toast.classList.add('toast-exit');
+    setTimeout(() => toast.remove(), 300);
+  }, 4500);
+}
+
+// ===== LOGIN / LOGOUT SYSTEM =====
+async function handleLogin(e) {
+  e.preventDefault();
+  const username = document.getElementById('login-username').value.trim();
+  const errorEl = document.getElementById('login-error');
+  errorEl.textContent = '';
+
+  try {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username })
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      currentUser = result.user;
+      sessionStorage.setItem('inventech_user', JSON.stringify(currentUser));
+      showAppAfterLogin();
+    } else {
+      errorEl.textContent = result.error || 'Login failed.';
+    }
+  } catch (err) {
+    errorEl.textContent = 'Connection error. Please try again.';
+  }
+}
+
+function handleLogout() {
+  sessionStorage.removeItem('inventech_user');
+  currentUser = null;
+  // Show login overlay
+  document.getElementById('login-overlay').classList.remove('hidden');
+  document.getElementById('app-container').style.display = 'none';
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+function showAppAfterLogin() {
+  // Hide login, show loading
+  document.getElementById('login-overlay').classList.add('hidden');
+  document.getElementById('loading-overlay').style.display = 'flex';
+
+  // Update user profile in header
+  updateUserProfile();
+
+  // Load data then show app
+  fetchState().then(() => {
+    renderAll();
+    // Short delay for loading screen effect
+    setTimeout(() => {
+      document.getElementById('loading-overlay').classList.add('hidden');
+      document.getElementById('app-container').style.display = 'flex';
+      setTimeout(() => {
+        document.getElementById('loading-overlay').style.display = 'none';
+      }, 600);
+    }, 1200);
+  });
+}
+
+function updateUserProfile() {
+  if (!currentUser) return;
+  const names = currentUser.name.split(' ');
+  const initials = names.map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  document.getElementById('user-avatar').textContent = initials;
+  document.getElementById('user-display-name').textContent = currentUser.name;
+  document.getElementById('user-display-role').textContent = currentUser.department;
+}
+
+// ===== MOBILE MENU =====
+function toggleMobileMenu() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar.classList.toggle('mobile-open');
+  overlay.classList.toggle('active');
+}
+
+// ===== RESET DEMO DATA =====
+async function resetDemoData() {
+  if (!confirm('Are you sure you want to reset all data back to the original demo state? This cannot be undone.')) {
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/reset', { method: 'POST' });
+    if (response.ok) {
+      showToast('success', 'Data Reset', 'Database has been restored to original demo data.');
+      await refreshData();
+    } else {
+      showToast('error', 'Reset Failed', 'Could not reset the database.');
+    }
+  } catch (err) {
+    showToast('error', 'Connection Error', 'Failed to connect to the server.');
+  }
+}
+
 // On Document Load
 document.addEventListener('DOMContentLoaded', () => {
+  // Check for existing session
+  const savedUser = sessionStorage.getItem('inventech_user');
+  if (savedUser) {
+    currentUser = JSON.parse(savedUser);
+    showAppAfterLogin();
+  }
+
   // Navigation handling
   setupNavigation();
   
   // Initialize E-Signature canvas
   setupSignaturePad();
-  
-  // Load initial data
-  refreshData();
   
   // Set up periodic sync to show background workflow updates
   setInterval(refreshDataSilent, 3000);
@@ -713,7 +845,7 @@ async function handleCheckoutSubmit(e) {
   const userId = document.getElementById('checkout-user').value;
 
   if (!assetId || !userId) {
-    alert("Please select both an asset and a user.");
+    showToast('error', 'Missing Selection', 'Please select both an asset and a user.');
     return;
   }
 
@@ -729,7 +861,7 @@ async function handleCheckoutSubmit(e) {
 
     const result = await response.json();
     if (response.ok) {
-      alert(`Asset checked out successfully! Receipt signature hash logged:\n${result.signatureHash}`);
+      showToast('success', 'Checkout Complete', `Asset checked out. Signature hash: ${result.signatureHash.substring(0, 24)}...`);
       // Clean form
       document.getElementById('checkout-asset').value = '';
       document.getElementById('checkout-user').value = '';
@@ -739,7 +871,7 @@ async function handleCheckoutSubmit(e) {
       await refreshData();
       switchView('overview');
     } else {
-      alert("Error: " + result.error);
+      showToast('error', 'Checkout Failed', result.error);
     }
   } catch (err) {
     console.error("Checkout request failed:", err);
@@ -766,11 +898,11 @@ async function checkinAsset(assetId) {
     });
 
     if (response.ok) {
-      alert("Asset returned successfully. Relational status reset to DEPLOYABLE and marked for Sanitization audit.");
+      showToast('success', 'Asset Returned', 'Status reset to DEPLOYABLE. Marked for sanitization audit.');
       await refreshData();
     } else {
       const err = await response.json();
-      alert("Error checking in: " + err.error);
+      showToast('error', 'Check-in Failed', err.error);
     }
   } catch (err) {
     console.error("Check-in failed:", err);
@@ -804,12 +936,12 @@ async function handleModalSanitizeSubmit(e) {
     });
 
     if (response.ok) {
-      alert("Compliance sanitization verified. Asset is now ready for deployment!");
+      showToast('success', 'Sanitization Verified', 'Asset is now ready for deployment.');
       closeSanitizeModal();
       await refreshData();
     } else {
       const err = await response.json();
-      alert("Error logging sanitization: " + err.error);
+      showToast('error', 'Sanitization Failed', err.error);
     }
   } catch (err) {
     console.error("Sanitize post failed:", err);
@@ -826,12 +958,12 @@ async function approveWorkflow(id, isApproved) {
     });
 
     if (response.ok) {
-      const actionName = isApproved ? "approved" : "rejected";
-      alert(`Temporal Workflow ${id} ${actionName}. State machine is processing the transition.`);
+      const actionName = isApproved ? 'approved' : 'rejected';
+      showToast(isApproved ? 'success' : 'info', `Workflow ${actionName.charAt(0).toUpperCase() + actionName.slice(1)}`, `Temporal Workflow ${id} ${actionName}. State machine processing.`);
       await refreshData();
     } else {
       const err = await response.json();
-      alert("Error updating workflow: " + err.error);
+      showToast('error', 'Workflow Error', err.error);
     }
   } catch (err) {
     console.error("Workflow update failed:", err);
@@ -845,7 +977,7 @@ async function handleHrisSubmit(e) {
   const status = document.getElementById('hris-status').value;
 
   if (!userId || !status) {
-    alert("Please select a profile to modify.");
+    showToast('error', 'Missing Selection', 'Please select a profile to modify.');
     return;
   }
 
@@ -858,13 +990,10 @@ async function handleHrisSubmit(e) {
 
     const result = await response.json();
     if (response.ok) {
-      alert(`HRIS Status Sync Event Processed!\n` +
-            `- License seats automatically reclaimed: ${result.licensesReclaimed}\n` +
-            `- Hardware assets unassigned: ${result.assetsReclaimed}\n` +
-            `Check the CDC logs on the terminal panel to see the Debezium + Kafka stream actions.`);
+      showToast('success', 'HRIS Sync Complete', `Reclaimed ${result.licensesReclaimed} license seats and ${result.assetsReclaimed} hardware assets. Check CDC logs for details.`);
       await refreshData();
     } else {
-      alert("Error: " + result.error);
+      showToast('error', 'HRIS Sync Error', result.error);
     }
   } catch (err) {
     console.error("HRIS sync simulator failed:", err);
@@ -886,12 +1015,12 @@ async function handleProcurementSubmit(e) {
     });
 
     if (response.ok) {
-      alert("Procurement request submitted to Temporal workflow database. Approve it in the Active Workflows table.");
+      showToast('success', 'Request Submitted', 'Procurement request sent to Temporal workflow. Approve it in the workflows table.');
       await refreshData();
       switchView('overview');
     } else {
       const err = await response.json();
-      alert("Error initiating procurement: " + err.error);
+      showToast('error', 'Procurement Error', err.error);
     }
   } catch (err) {
     console.error("Procurement submission failed:", err);
@@ -907,14 +1036,10 @@ async function runMlInference() {
 
     const result = await response.json();
     if (response.ok) {
-      alert(`SageMaker ML inference run complete!\n` +
-            `- Scanned: ${result.scannedCount} devices\n` +
-            `- Critical failures predicted: ${result.criticalCount}\n` +
-            `- Elevated risk alerts: ${result.warningCount}\n` +
-            `Check the Diagnostics catalog or the terminal logs to see proactive support tickets generated!`);
+      showToast('info', 'ML Inference Complete', `Scanned ${result.scannedCount} devices. Critical: ${result.criticalCount}, Warnings: ${result.warningCount}. Check diagnostics for details.`);
       await refreshData();
     } else {
-      alert("ML Inference job failed: " + result.error);
+      showToast('error', 'Inference Failed', result.error);
     }
   } catch (err) {
     console.error("Inference run failed:", err);
@@ -943,13 +1068,13 @@ async function handleModalProcurementSubmit(e) {
     });
 
     if (response.ok) {
-      alert("Workflow initiated successfully. Approved manually under workflows table.");
+      showToast('success', 'Workflow Created', 'Procurement workflow initiated. Approve it in the workflows table.');
       closeWorkflowModal();
       await refreshData();
       switchView('overview');
     } else {
       const err = await response.json();
-      alert("Error starting workflow: " + err.error);
+      showToast('error', 'Workflow Error', err.error);
     }
   } catch (err) {
     console.error("Modal workflow fail:", err);
@@ -975,14 +1100,7 @@ async function handleModalAssetSubmit(e) {
   const type = document.getElementById('modal-asset-type').value;
   const loc = document.getElementById('modal-asset-loc').value;
 
-  // Since there is no post endpoint directly for custom asset, we simulate by sending a request or updating on server
-  // Wait, let's write a backend handler if needed. Wait, in server.js, we don't have a POST /api/assets endpoint, but we can write one or mock it on client and save.
-  // Wait! Let's check if we can add a POST /api/assets endpoint in server.js.
-  // Oh, wait, in server.js we didn't add the POST /api/assets endpoint, let's check!
-  // Let's add it or we can just send it to a general endpoint if we make one. Let's see: yes, we can add it to the server.js file!
-  // Let's check if there is an easy way. Let's add it. But first let's see what app.js does.
-  
-  // We can write a POST to a new endpoint `/api/assets`
+
   try {
     const response = await fetch('/api/assets', {
       method: 'POST',
@@ -991,12 +1109,12 @@ async function handleModalAssetSubmit(e) {
     });
 
     if (response.ok) {
-      alert(`Asset ${tag} successfully saved into PostgreSQL core relational database.`);
+      showToast('success', 'Asset Registered', `Asset ${tag} saved to PostgreSQL database.`);
       closeAssetModal();
       await refreshData();
     } else {
       const err = await response.json();
-      alert("Error adding asset: " + err.error);
+      showToast('error', 'Registration Failed', err.error);
     }
   } catch (err) {
     console.error("Asset register failed:", err);
@@ -1108,11 +1226,11 @@ async function retireAsset(id) {
     });
 
     if (response.ok) {
-      alert(`Asset ${asset.asset_tag} successfully retired. Please go to the 'Disposal & Wipes' tab to perform data sanitization and finalize decommissioning.`);
+      showToast('info', 'Asset Retired', `${asset.asset_tag} retired. Go to Disposal & Wipes to sanitize and decommission.`);
       await refreshData();
     } else {
       const err = await response.json();
-      alert("Retirement failed: " + err.error);
+      showToast('error', 'Retirement Failed', err.error);
     }
   } catch (err) {
     console.error("Retire asset failed:", err);
@@ -1236,7 +1354,7 @@ async function handleModalDisposeSubmit(e) {
 
     const result = await response.json();
     if (response.ok) {
-      alert(`Decommissioning finalized! Cryptographic Audit Certificate generated:\n${result.disposalRecord.certificate_hash}`);
+      showToast('success', 'Disposal Finalized', `Audit certificate generated: ${result.disposalRecord.certificate_hash.substring(0, 30)}...`);
       closeDisposeModal();
       
       // Update data and refresh UI
@@ -1245,7 +1363,7 @@ async function handleModalDisposeSubmit(e) {
       // Open the certificate preview automatically for the newly created record
       showCertificate(result.disposalRecord.id);
     } else {
-      alert("Error finalizing disposal: " + result.error);
+      showToast('error', 'Disposal Failed', result.error);
     }
   } catch (err) {
     console.error("Disposal sign-off failed:", err);
